@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <link rel="icon" href="https://i0.hdslb.com/bfs/openplatform/8a14ce459d10de4b3f7b53233b004da60ae8be3e.jpg" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no">
+  <title>个人主页/自我介绍</title>
+
+  <style>
+    /* =============================
+       页脚：半透明淡蓝光条（亮色模式）
+       ============================= */
+    #footer-bar {
+      margin-top: 60px;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 15px;
+      color: #666;
+      opacity: 0.9;
+
+      /* 半透明淡蓝光条背景 */
+      background: rgba(120, 180, 255, 0.12);
+      backdrop-filter: blur(6px);
+
+      /* 细蓝光条上沿描边 */
+      border-top: 2px solid rgba(120, 180, 255, 0.35);
+
+      /* 柔光淡入进入动画 */
+      animation: footerFadeIn 1.3s ease;
+    }
+
+    /* =============================
+       夜间模式：柔和蓝光阴影
+       ============================= */
+    body.dark #footer-bar {
+      background: rgba(140, 170, 255, 0.10);
+      border-top: 2px solid rgba(160, 190, 255, 0.25);
+
+      /* 柔和浅蓝光辉散射 */
+      box-shadow: 0 -3px 16px rgba(150, 190, 255, 0.28);
+      color: #cfcfcf;
+    }
+
+    /* 淡入动画 */
+    @keyframes footerFadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /*-------------------- 基础全局样式 --------------------*/
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Noto Sans SC", sans-serif;
+      background: #ffffff;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+      -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
+    }
+
+    /* 夜间模式 */
+    body.dark {
+      background: #1f1f1f;
+      color: #dcdcdc;
+    }
+
+    /* 柔和浅灰字体（夜间模式） */
+    body.dark p, body.dark span, body.dark li {
+      color: #cfcfcf;
+    }
+
+    /*-------------------- 背景图 --------------------*/
+    /* 徐跃程背景图 */
+    .header-bg-xu {
+      width: 100%;
+      height: 500px;
+      background-image: url('https://i0.hdslb.com/bfs/openplatform/55bde5ffbc73664b2a188a3182a3875cf118c188.png');
+      background-size: cover;
+      background-position: center 20%;
+      filter: brightness(0.92);
+      position: relative;
+      z-index: 0;
+    }
+
+    /* 若蕊背景图 */
+    .header-bg-ruorui {
+      width: 100%;
+      height: 500px;
+      background-image: url('https://i0.hdslb.com/bfs/openplatform/05b3752f94e1becc421e1f719dc018aa6cead50c.jpg');
+      background-size: cover;
+      background-position: center 20%;
+      filter: brightness(0.92);
+      position: relative;
+      z-index: 0;
+    }
+
+    /*-------------------- 顶部导航 --------------------*/
+    nav {
+      width: 100%;
+      padding: 18px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .left-name:hover {
+      color: #79b4ff;
+      transform: translateY(-3px);
+      text-shadow: 0 0 10px rgba(120,180,255,0.6);
+    }
+
+    body.dark nav {
+      background: rgba(40,40,40,0.6);
+    }
+
+    nav a {
+      font-size: 18px;
+      text-decoration: none;
+      color: #333;
+      margin-right: 15px;
+      transition: 0.25s;
+      position: relative;
+      overflow: hidden;
+      padding: 8px 0; /* 增加触摸区域 */
+    }
+
+    nav a:hover {
+      color: #79b4ff;
+      text-shadow: 0 0 6px rgba(120,180,255,0.4);
+    }
+
+    body.dark nav a {
+      color: #dcdcdc;
+    }
+
+    nav .left-name {
+      width: 120px;              
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 20px;
+      transition: 0.3s;
+      text-align: left;
+      padding: 8px 0; /* 增加触摸区域 */
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background: #79b4ff;
+      transition: width 0.3s ease;
+      border-radius: 3px;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* 夜间模式下的下划线颜色 */
+    body.dark nav a::after {
+      background: #b1c8ff;
+    }
+
+    /* 夜间模式按钮 */
+    .mode-toggle {
+      cursor: pointer;
+      font-size: 20px;
+      user-select: none;
+      padding: 8px; /* 增加触摸区域 */
+    }
+
+    /*-------------------- 头像 --------------------*/
+    .avatar-box {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: -80px auto 0;
+      border: 4px solid white;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 0 20px rgba(120,180,255,0.3);
+    }
+
+    .avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(1.07) blur(0.3px);
+      mix-blend-mode: screen;
+    }
+
+    /*-------------------- 区块标题 --------------------*/
+    .section-title {
+      margin-top: 50px;
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 1s ease;
+    }
+
+    /* 标题淡蓝光 */
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      height: 4px;
+      border-radius: 10px;
+      background: rgba(120,180,255,0.35);
+      animation: glow 2s infinite alternate;
+    }
+
+    /*-------------------- 内容区 --------------------*/
+    .container {
+      width: 90%;
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+
+    /*-------------------- 个人资料 --------------------*/
+    .profile-table {
+      width: 100%;
+      font-size: 18px;
+      line-height: 40px;
+      margin-top: 20px;
+    }
+
+    .profile-table td:first-child {
+      width: 130px;
+      font-weight: bold;
+      padding-right: 20px;
+    }
+
+    /*-------------------- 大学规划 Timeline --------------------*/
+    .timeline {
+      margin-top: 40px;
+      border-left: 3px solid #79b4ff;
+      padding-left: 30px;
+      position: relative;
+    }
+
+    .timeline-item {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    /* 时间线 蓝色圆点（避免时间线重叠 + 呼吸动效） */
+    .timeline-item::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      background: #79b4ff;
+      border-radius: 50%;
+      position: absolute;
+
+      /* ⭐ 圆点右移 — 完美避开时间线 */
+      left: -25px;
+      top: 6px;
+
+      /* ⭐ 呼吸动效 */
+      box-shadow: 0 0 6px rgba(120,180,255,0.6);
+      animation: dotBreath 1.8s infinite ease-in-out;
+    }
+
+    /* 夜间模式下的圆点 —— 更柔和 */
+    body.dark .timeline-item::before {
+      background: #a9c8ff;
+      box-shadow: 0 0 6px rgba(169,200,255,0.55);
+    }
+
+    /* 呼吸动画定义 */
+    @keyframes dotBreath {
+      0%   { transform: scale(1);   box-shadow: 0 0 6px rgba(120,180,255,0.6); }
+      50%  { transform: scale(1.22); box-shadow: 0 0 12px rgba(120,180,255,0.85); }
+      100% { transform: scale(1);   box-shadow: 0 0 6px rgba(120,180,255,0.6); }
+    }
+
+    .timeline-title {
+      font-size: 20px;
+      margin-left: 10px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #3e6fa8;
+    }
+
+    body.dark .timeline-title {
+      color: #b1c8ff;
+    }
+
+    /*-------------------- 待办事项 --------------------*/
+    .todo-box {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(120,180,255,0.08);
+      border-radius: 10px;
+      animation: fadeIn 1s ease;
+    }
+
+    .todo-box ul {
+      list-style: none;
+      line-height: 34px;
+      font-size: 18px;
+    }
+
+    /*-------------------- 留言表单 --------------------*/
+    form {
+      margin-top: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    form input, form textarea {
+      padding: 12px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.3s;
+      -webkit-appearance: none; /* 移除iOS默认样式 */
+    }
+
+    body.dark form input,
+    body.dark form textarea {
+      background: #2b2b2b;
+      border-color: #555;
+      color: #ddd;
+    }
+
+    form button {
+      padding: 14px; /* 增加触摸区域 */
+      background: #79b4ff;
+      border: none;
+      border-radius: 8px;
+      font-size: 17px;
+      cursor: pointer;
+      color: white;
+      transition: 0.3s;
+      min-height: 44px; /* 确保触摸区域足够大 */
+    }
+
+    form button:hover {
+      background: #5a9eff;
+    }
+
+    /*-------------------- 成功发送提示 --------------------*/
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #79b4ff;
+      color: white;
+      padding: 15px 24px;
+      font-size: 17px;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.4s ease;
+      pointer-events: none;
+      max-width: 80%;
+      text-align: center;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /*-------------------- 动画 --------------------*/
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
+
+    /*-------------------- 隐藏切换页面 --------------------*/
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ==========================
+       项目栏 Cards（徐跃程页面） - 修改为每行一个项目
+       ========================== */
+    .projects {
+      margin-top: 40px;
+    }
+
+    .project-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .project-card {
+      background: rgba(120,180,255,0.10);
+      border: 1px solid rgba(120,180,255,0.25);
+      border-radius: 16px;
+      padding: 25px;
+      transition: 0.35s;
+      box-shadow: 0 4px 12px rgba(120,180,255,0.15);
+      width: 100%;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px rgba(120,180,255,0.28);
+    }
+
+    .project-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #3e6fa8;
+    }
+
+    body.dark .project-card {
+      background: rgba(140,170,255,0.08);
+      border-color: rgba(150,180,255,0.22);
+      box-shadow: 0 4px 12px rgba(150,190,255,0.15);
+    }
+
+    body.dark .project-title {
+      color: #b8d0ff;
+    }
+
+    .project-desc {
+      font-size: 17px;
+      line-height: 28px;
+      margin-bottom: 15px;
+    }
+
+    .project-tag {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 14px;
+      background: rgba(120,180,255,0.25);
+      border-radius: 6px;
+      margin-right: 8px;
+      color: #2d5c99;
+    }
+
+    body.dark .project-tag {
+      background: rgba(160,190,255,0.25);
+      color: #dfe7ff;
+    }
+
+    /* ==========================
+       移动端响应式样式
+       ========================== */
+    @media (max-width: 768px) {
+      /* 导航栏优化 */
+      nav {
+        padding: 12px 5%;
+      }
+      
+      nav a {
+        font-size: 16px;
+        margin-right: 10px;
+      }
+      
+      nav .left-name {
+        font-size: 18px;
+        width: 100px;
+      }
+      
+      .mode-toggle {
+        font-size: 18px;
+      }
+      
+      /* 背景图高度调整 */
+      .header-bg-xu, .header-bg-ruorui {
+        height: 300px;
+      }
+      
+      /* 头像大小调整 */
+      .avatar-box {
+        width: 120px;
+        height: 120px;
+        margin-top: -60px;
+      }
+      
+      /* 区块标题字体调整 */
+      .section-title {
+        font-size: 24px;
+        margin-top: 30px;
+      }
+      
+      .section-title::after {
+        width: 120px;
+      }
+      
+      /* 内容区容器调整 */
+      .container {
+        width: 92%;
+        padding: 30px 0;
+      }
+      
+      /* 个人资料表格调整 */
+      .profile-table {
+        font-size: 16px;
+      }
+      
+      .profile-table td:first-child {
+        width: 100px;
+        padding-right: 15px;
+      }
+      
+      /* 时间线调整 */
+      .timeline {
+        padding-left: 20px;
+      }
+      
+      .timeline-item::before {
+        left: -22px;
+      }
+      
+      .timeline-title {
+        font-size: 18px;
+      }
+      
+      /* 项目卡片调整 */
+      .project-card {
+        padding: 20px;
+      }
+      
+      .project-title {
+        font-size: 20px;
+      }
+      
+      .project-desc {
+        font-size: 16px;
+      }
+      
+      /* 页脚调整 */
+      #footer-bar {
+        margin-top: 40px;
+        padding: 15px 0;
+        font-size: 14px;
+      }
+      
+      /* 成功提示位置调整 */
+      #toast {
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* 超小屏幕进一步优化 */
+      .header-bg-xu, .header-bg-ruorui {
+        height: 250px;
+      }
+      
+      .avatar-box {
+        width: 100px;
+        height: 100px;
+        margin-top: -50px;
+      }
+      
+      .section-title {
+        font-size: 22px;
+      }
+      
+      .profile-table {
+        font-size: 15px;
+        line-height: 32px;
+      }
+      
+      .todo-box ul {
+        font-size: 16px;
+      }
+      
+      form input, form textarea {
+        font-size: 16px; /* 防止iOS缩放 */
+      }
+      
+      .project-card {
+        padding: 18px;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <!--========================================================
+  =                     导航栏区域                           =
+  =========================================================-->
+  <nav>
+    <div class="left-name" id="switchHome">若蕊</div>
+
+    <div>
+      <a href="#" id="toTop">关于我</a>
+      <a href="#profile">资料</a>
+      <a href="#timeline">大学规划</a>
+      <a href="#contact">联系</a>
+    </div>
+
+    <span class="mode-toggle">🌙</span>
+  </nav>
+
+  <!--========================================================
+  =                     页面1：徐跃程                        =
+  =========================================================-->
+  <div class="page active" id="page-main">
+
+    <div class="header-bg-xu"></div>
+
+    <div class="avatar-box">
+      <img src="https://i0.hdslb.com/bfs/openplatform/8a14ce459d10de4b3f7b53233b004da60ae8be3e.jpg">
+    </div>
+
+    <h2 class="section-title">你好，我是徐跃程</h2>
+
+    <div class="container" id="profile">
+      <h3 style="font-size:22px;margin-bottom:14px;">个人资料</h3>
+
+      <table class="profile-table">
+        <tr><td>性别</td><td>男</td></tr>
+        <tr><td>出生年月</td><td>2007.02.01</td></tr>
+        <tr><td>现居</td><td>湖北 · 武汉</td></tr>
+        <tr><td>身份</td><td>华中科技大学 软件工程专业 大一新生</td></tr>
+      </table>
+
+      <br><br>
+      <h3 style="font-size:22px;">自我介绍</h3>
+      <p style="margin-top:10px; line-height:32px; font-size:18px;">
+        我是一名喜欢安静思考的学生，对技术与艺术都怀有浓厚兴趣。  
+        编程让我能以逻辑构建世界，而二次元与设计，则让我在色彩与情感中找到平衡。  
+        目前正在学习前端开发与交互设计，希望未来能创造出既有温度又有理性的作品。
+      </p>
+    </div>
+
+
+    <!-- 大学规划 -->
+    <div class="container" id="timeline">
+      <h2 class="section-title" style="margin-top:20px; margin-left:20px;">大学四年规划</h2>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-title">大一 · 探索期</div>
+          夯实基础，开拓视野。完成个人网页制作，加入技术社团，
+          掌握 C 语言，开始使用 GitHub 管理代码。
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-title">大二 · 发展期</div>
+          技能深化，探索方向。开发个人项目，参与团队协作，寻找实习机会，
+          深入学习数据库（MySQL）。
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-title">大三 · 冲刺期</div>
+          聚焦兴趣方向，选修高阶课程，系统学习算法与数据结构，
+          准备技术面试，积累项目经验。
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-title">大四 · 收获期</div>
+          全力备考或准备申请材料。深入研究某一专业领域，完成毕业设计，
+          积累科研或实习成果，为未来发展打下坚实基础。
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- 待办事项 -->
+    <div class="container">
+      <h2 class="section-title">我的待办</h2>
+
+      <div class="todo-box">
+        <ul>
+          <li>苦学线性代数</li>
+          <li>学习 C 语言</li>
+          <li>完善个人页面</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 项目栏 -->
+    <div class="container projects">
+      <h2 class="section-title">我的项目</h2>
+
+      <div class="project-grid">
+
+        <div class="project-card">
+          <div class="project-title">个人主页（本页面）</div>
+          <div class="project-desc">
+            一个持续迭代、自定义交互、夜间模式与双主页切换的个人展示页。此项目展示了我的前端开发能力，包括响应式设计、JavaScript交互功能和CSS动画效果。
+          </div>
+          <span class="project-tag">HTML</span>
+          <span class="project-tag">CSS</span>
+          <span class="project-tag">JavaScript</span>
+          <span class="project-tag">响应式设计</span>
+        </div>
+
+        <div class="project-card" onclick="window.open('https://appbuilder.baidu.com/s/QVtel9Sj', '_blank')"
+             style="cursor:pointer;">
+          <div class="project-title">动漫介绍智能体</div>
+          <div class="project-desc">
+            一个基于 AI 的智能动漫介绍助手，可快速查询番剧、角色资料、剧情简介。使用百度AppBuilder平台开发，能够理解自然语言查询并提供准确的动漫相关信息。
+          </div>
+          <span class="project-tag">AI</span>
+          <span class="project-tag">LMM</span>
+          <span class="project-tag">Baidu AppBuilder</span>
+          <span class="project-tag">自然语言处理</span>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- 联系方式 -->
+    <div class="container" id="contact">
+      <h2 class="section-title">联系方式</h2>
+      <p style="margin-top:10px; font-size:18px; line-height:32px;">
+        电话：15335909771<br>
+        邮箱：U202517503@hust.edu.cn<br>
+        QQ：1779499859<br>
+        WeChat：Roa_ring0517
+      </p>
+    </div>
+
+
+    <!-- 留言表单 -->
+    <div class="container">
+      <h2 class="section-title">对我想说的话</h2>
+
+      <form action="https://formspree.io/f/mqawagyw" method="POST" id="contactForm">
+        <input type="email" name="email" placeholder="你的邮箱/姓名"/>
+        <textarea name="message" rows="4" placeholder="想对我说些什么？"></textarea>
+        <button type="submit">发送</button>
+      </form>
+    </div>
+
+  </div><!-- page-main end -->
+
+
+
+  <!--========================================================
+  =                     页面2：若蕊                          =
+  =========================================================-->
+  <div class="page" id="page-alt">
+
+    <div class="header-bg-ruorui"></div>
+
+    <div class="avatar-box">
+      <img src="https://i0.hdslb.com/bfs/openplatform/8a14ce459d10de4b3f7b53233b004da60ae8be3e.jpg">
+    </div>
+
+    <h2 class="section-title">你好，我是若蕊</h2>
+
+    <div class="container" id="r-profile">
+      <h3 style="font-size:22px;margin-bottom:14px;">个人资料</h3>
+
+      <table class="profile-table">
+        <tr><td>性别</td><td>男</td></tr>
+        <tr><td>出生年月</td><td>2007.02.01</td></tr>
+        <tr><td>现居</td><td>地球</td></tr>
+        <tr><td>身份</td><td>二次元</td></tr>
+      </table>
+
+      <br><br>
+      <h3 style="font-size:22px;">自我介绍</h3>
+      <p style="margin-top:10px; line-height:32px; font-size:18px;">
+        珍贵动物二刺螈，艾拉厨，ヒバナ厨，生电玩家，文明VI萌新。  
+        最喜欢的歌曲是
+  <a href="https://music.163.com/#/song?id=2040876720" 
+     target="_blank" 
+     style="color:#79b4ff; text-decoration:none;">
+    《芙罗兰》
+  </a>
+  ，最喜欢的动漫是《摇曳露营》。
+      </p>
+    </div>
+
+    <!-- 大学规划（若蕊版） -->
+    <div class="container" id="r-timeline">
+      <h2 class="section-title" style="margin-top:20px; margin-left:20px;">我的四年规划</h2>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-title">大一</div>
+          成为一个阳光的宅，交朋友，看动漫。
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-title">大二</div>
+          学习 PS，PR，AU，看很多动漫。
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-title">大三</div>
+          尝试发布视频，成为 up，看更多动漫。
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-title">大四</div>
+          不为毕业所困，继续看动漫！做一个二刺螈！
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- 待办（若蕊版） -->
+    <div class="container">
+      <h2 class="section-title">我的待办</h2>
+
+      <div class="todo-box">
+        <ul>
+          <li>继续看《间谍过家家》《赛马娘》</li>
+          <li>补完《小林家的龙女仆》</li>
+          <li>补完《little busters》</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- 联系方式 -->
+    <div class="container" id="r-contact">
+      <h2 class="section-title">联系方式</h2>
+      <p style="margin-top:10px; font-size:18px; line-height:32px;">
+        bilibili：UID 592474490<br>
+        Minecraft：Roa_ring<br>
+        Bangumi：923886<br>
+        pixiv：87090401
+      </p>
+    </div>
+
+
+    <!-- 留言表单复用 -->
+    <div class="container">
+      <h2 class="section-title">对我想说的话</h2>
+
+      <form action="https://formspree.io/f/mqawagyw" method="POST" id="contactForm2">
+        <input type="email" name="email" placeholder="你的邮箱/姓名"/>
+        <textarea name="message" rows="4" placeholder="想对我说些什么？"></textarea>
+        <button type="submit">发送</button>
+      </form>
+    </div>
+
+  </div><!-- page-alt end -->
+
+
+
+  <!--========================================================
+  =                     提示气泡                            =
+  =========================================================-->
+  <div id="toast">💬 留言已成功发送</div>
+
+
+
+  <!--========================================================
+  =                     JS：交互功能                         =
+  =========================================================-->
+  <script>
+    /* 夜间模式 */
+    const toggle = document.querySelector('.mode-toggle');
+    toggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      toggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    });
+
+    /* 返回顶部 */
+    document.getElementById('toTop').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* 双主页切换 */
+    const mainPage = document.getElementById("page-main");
+    const altPage = document.getElementById("page-alt");
+    const switchHome = document.getElementById("switchHome");
+
+    let isAlt = false;
+
+    switchHome.onclick = () => {
+      isAlt = !isAlt;
+      if (isAlt) {
+        switchHome.textContent = "徐跃程";
+        mainPage.classList.remove("active");
+        altPage.classList.add("active");
+      } else {
+        switchHome.textContent = "若蕊";
+        altPage.classList.remove("active");
+        mainPage.classList.add("active");
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    /* ===================================
+       动态导航栏：根据当前页面切换跳转目标
+       =================================== */
+
+/* ===================================
+   动态导航栏：根据当前页面切换跳转目标
+   =================================== */
+
+function updateNavLinks() {
+  const isMain = mainPage.classList.contains("active");
+
+  // 获取所有导航链接
+  const profileLink = document.querySelector('a[href="#profile"], a[href="#r-profile"]');
+  const timelineLink = document.querySelector('a[href="#timeline"], a[href="#r-timeline"]');
+  const contactLink = document.querySelector('a[href="#contact"], a[href="#r-contact"]');
+  const aboutLink = document.getElementById('toTop');
+
+  if (isMain) {
+    // 徐跃程页面导航跳转
+    profileLink.setAttribute("href", "#profile");
+    timelineLink.setAttribute("href", "#timeline");
+    contactLink.setAttribute("href", "#contact");
+    aboutLink.setAttribute("href", "#");
+  } else {
+    // 若蕊页面导航跳转（使用另一套 ID）
+    profileLink.setAttribute("href", "#r-profile");
+    timelineLink.setAttribute("href", "#r-timeline");
+    contactLink.setAttribute("href", "#r-contact");
+    aboutLink.setAttribute("href", "#");
+  }
+}
+
+// 添加平滑滚动功能
+function smoothScrollTo(targetId) {
+  const targetElement = document.querySelector(targetId);
+  if (targetElement) {
+    window.scrollTo({
+      top: targetElement.offsetTop - 80, // 减去导航栏高度
+      behavior: 'smooth'
+    });
+  }
+}
+
+// 修改导航链接点击事件
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      smoothScrollTo(href);
+    }
+  });
+});
+
+    // 初始化导航链接
+    updateNavLinks();
+
+    // 当主页切换时自动更新导航栏行为
+    switchHome.addEventListener("click", () => {
+      setTimeout(updateNavLinks, 30); // 等切换完再更新 href
+    });
+
+
+    /* 留言发送提示 */
+    function hookForm(id){
+      const form = document.getElementById(id);
+      const toast = document.getElementById('toast');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData(form);
+        const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' }});
+        if (res.ok) {
+          form.reset();
+          toast.classList.add("show");
+          setTimeout(() => toast.classList.remove("show"), 3000);
+        }
+      });
+    }
+
+    hookForm("contactForm");
+    hookForm("contactForm2");
+
+    /* Custom audio playlist */
+    document.querySelectorAll("#music-list li").forEach(item=>{
+      item.onclick=()=>{
+        document.getElementById("audio-source").src=item.dataset.src;
+        document.getElementById("audio-player").load();
+        document.getElementById("audio-player").play();
+      };
+    });
+
+    /* 移动端触摸优化 - 防止双击缩放 */
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+      const now = (new Date()).getTime();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+
+    </script>
+
+  <footer id="footer-bar">
+    © 2025 徐跃程 (,,・ω・,,)
+  </footer>
+</body>
+</html>
